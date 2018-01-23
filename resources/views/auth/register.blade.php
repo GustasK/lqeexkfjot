@@ -22,9 +22,27 @@
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
+
                             </div>
                         </div>
+                        <div class="form-group{{$errors->has('gender') ? 'has-error' : ''}}">
+                            <label for="name" class="col-md-4 control-label">Gender</label>
 
+                            <div class="col-md-6">
+                                <div class="checkbox">
+
+                                    <label class="checkbox-inline"><input type="checkbox" value="male" name="gender">Male</label>
+                                    <label class="checkbox-inline"><input type="checkbox" value="female" name="gender">Female</label>
+
+                                    @if ($errors->has('gender'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 

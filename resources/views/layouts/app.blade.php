@@ -53,6 +53,18 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a href="{{ route('user.inbox') }}">Inbox <span class="badge pull-right">5</span></a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+
+                                    @if(Auth::user()->admin == 1)
+                                        <li>
+                                            <a href="{{ route('admin.index') }}">Admin Panel</a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                    @endif
+
+                                    <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

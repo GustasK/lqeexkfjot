@@ -23,6 +23,10 @@ class CreateUsersTable extends Migration
             $table->string("gender");
             $table->string('email', 250)->unique();
             $table->string('password');
+            $table->string('description')->default("");
+            $table->string('city')->default("");
+            $table->string('picture')->default("");
+            $table->integer('orientation')->default("");
             $table->integer('admin')->default(0);
             $table->rememberToken();
             $table->timestamps();

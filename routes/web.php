@@ -11,6 +11,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+<<<<<<< HEAD
 Route::get('/inbox', 'HomeController@inbox')->name('user.inbox');
 
 Route::group(['prefix' => 'message'], function() {
@@ -18,6 +19,14 @@ Route::group(['prefix' => 'message'], function() {
     Route::post('/compose', 'MessageController@create')->name('message.compose');
 });
 
+=======
+Route::post('/updateInfo', 'UpdateController@create')->name('updateInfo');
+
+
+Route::get('/updateInfo', function (){
+    return view('updateInfo');
+});
+>>>>>>> uploading picture fixed
 
 Route::group(['middleware' => CheckAdmin::class, 'prefix' => 'admin'], function() {
 

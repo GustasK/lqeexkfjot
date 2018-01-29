@@ -1,19 +1,11 @@
 <?php
 
 use App\Http\Middleware\CheckAdmin;
-use App\Events\MessagePosted;
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('/inbox', 'HomeController@inbox')->name('user.inbox');
-
 Route::get('/profile', 'HomeController@profile')->name('user.profile');
 
 Route::group(['prefix' => 'message'], function() {
@@ -21,26 +13,16 @@ Route::group(['prefix' => 'message'], function() {
     Route::post('/compose', 'MessageController@create')->name('message.compose');
 });
 
-Route::get('/chat', function() {
-    return view('chat.index');
+/*  Chat routes */
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('/chat', 'ChatController@index');
+    Route::get('/messages', 'ChatController@getMessages');
+    Route::post('/messages', 'ChatController@sendMessage');
+
 });
 
-Route::get('/messages', function () {
-    return App\Message::with('user')->get();
-});
-
-Route::post('/messages', function() {
-    $user = Auth::user();
-
-    $message = $user->messages()->create([
-        'message' => request()->get('message')
-    ]);
-
-    broadcast(new MessagePosted($message, $user))->toOthers();
-
-    return ['status' => 'OK'];
-})->middleware('auth');
-
+/*  Admin routes */
 Route::group(['middleware' => CheckAdmin::class, 'prefix' => 'admin'], function() {
 
     Route::get('/', 'AdminController@index')->name('admin.index');

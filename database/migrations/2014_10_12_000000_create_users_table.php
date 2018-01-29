@@ -21,12 +21,13 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string("gender");
+            $table->date('dob');
             $table->string('email', 250)->unique();
             $table->string('password');
             $table->string('description')->default("");
             $table->string('city')->default("");
             $table->string('picture')->default("");
-            $table->integer('orientation')->default("");
+            $table->string('orientation')->default("");
             $table->integer('admin')->default(0);
             $table->rememberToken();
             $table->timestamps();

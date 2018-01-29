@@ -1,16 +1,6 @@
 @extends('layouts.app')
 
-<script>
-    $(function() {
-        $( "#datepicker" ).datepicker({
-            dateFormat : 'mm/dd/yy',
-            changeMonth : true,
-            changeYear : true,
-            yearRange: '-100y:c+nn',
-            maxDate: '-1d'
-        });
-    });
-</script>
+
 @section('content')
 
 
@@ -56,13 +46,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" {{$errors->has('dob') ? 'has-error' : ''}}>
 
                             <label class="col-md-4 control-label">Date Of Birth</label>
 
                             <div class="col-md-6">
-                                <input type="text" id="datepicker" class="form-control">
+                                <input type="text" id="datepicker" class="form-control" name="dob">
                             </div>
+                            @if ($errors->has('dob'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('dob') }}</strong>
+                                    </span>
+                            @endif
 
                         </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -116,4 +111,6 @@
 </div>
 
 
+
 @endsection
+

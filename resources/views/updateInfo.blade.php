@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row">
            <div class="col-md-8 col-md-offset-2">
@@ -55,9 +56,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group"{{ $errors->has('file') ? ' has-error' : '' }}>
                                 <div class="col-md-6 col-md-offset-4">
                                    <input type="file" name="file">
+                                    @if ($errors->has('file'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('file') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
                             </div>
 

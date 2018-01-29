@@ -55,6 +55,15 @@
                                     <li>
                                         <a href="{{ route('user.inbox') }}">Inbox <span class="badge pull-right">5</span></a>
                                     </li>
+
+                                    <li>
+                                        <a href="{{ route('user.profile') }}">My Profile</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ route('user.profile') }}">Account Settings</a>
+                                    </li>
+
                                     <li role="separator" class="divider"></li>
 
                                     @if(Auth::user()->admin == 1)

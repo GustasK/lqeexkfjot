@@ -43,7 +43,7 @@ return [
 
     'disks' => [
 
-        'user' => [
+        'uploads' => [
             'driver' => 'local',
             'root'   => 'pics'
         ],

@@ -9,14 +9,11 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Http\Request;
-
-
-
 use App\User;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
 use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 class UpdateController extends Controller
 {
 
@@ -27,7 +24,7 @@ class UpdateController extends Controller
         $this->validate($request, [
             'description' => 'required|min:150|max:600',
             'city' => 'required',
-            'file' => 'required|mimes:jpeg,png,jpg|max:2048|'
+            'file' => 'required|image|mimes:jpg,png|max:2048'
 
         ],[
             'description.required' => 'Please write at least 150 char about yourself.',
@@ -41,7 +38,7 @@ class UpdateController extends Controller
         $user->city = $request->city;
         $user->orientation = $request->option;
 
-        Storage::disk('user')->put($request->file, 'Contents');
+        Storage::disk('uploads')->put($request->file, 'Contents');
 
         $user->picture = $request->file;
 

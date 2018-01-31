@@ -13,7 +13,7 @@
                     <div class="panel-heading">Update Info</div>
 
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('updateInfo') }}">
+                        <form class="form-horizontal" method="POST" action="{{ route('updateInfo') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">

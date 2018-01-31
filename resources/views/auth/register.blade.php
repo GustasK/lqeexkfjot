@@ -32,18 +32,18 @@
                             <label class="col-md-4 control-label">Gender</label>
 
                             <div class="col-md-6">
-                                <div class="checkbox">
 
-                                    <label class="checkbox-inline"><input type="checkbox" value="male" name="gender">Male</label>
-                                    <label class="checkbox-inline"><input type="checkbox" value="female" name="gender">Female</label>
 
-                                    @if ($errors->has('gender'))
-                                        <span class="help-block">
+                                <input type="radio" name="gender" value="male"> Male</label>
+                                <input type="radio" name="gender" value="female"> Female</label>
+
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('gender') }}</strong>
                                     </span>
-                                    @endif
+                                @endif
 
-                                </div>
+
                             </div>
                         </div>
                         <div class="form-group" {{$errors->has('dob') ? 'has-error' : ''}}>
@@ -52,13 +52,13 @@
 
                             <div class="col-md-6">
                                 <input type="text" id="datepicker" class="form-control" name="dob">
-                            </div>
-                            @if ($errors->has('dob'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('dob') }}</strong>
-                                    </span>
-                            @endif
 
+                                @if ($errors->has('dob'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('dob') }}</strong>
+                                        </span>
+                                @endif
+                            </div>
                         </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
@@ -93,6 +93,22 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+                        <div class="form-group{{$errors->has('terms') ? 'has-error' : ''}}">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class="checkbox">
+
+                                    <label class="checkbox-inline"><input type="checkbox" value="male" name="terms">I accept the Terms and Conditions</label>
+
+
+                                    @if ($errors->has('terms'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('terms') }}</strong>
+                                    </span>
+                                    @endif
+
+                                </div>
                             </div>
                         </div>
 

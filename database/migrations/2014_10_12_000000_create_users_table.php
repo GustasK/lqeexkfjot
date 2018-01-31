@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
@@ -24,9 +24,9 @@ class CreateUsersTable extends Migration
             $table->date('dob');
             $table->string('email', 250)->unique();
             $table->string('password');
-            $table->string('description')->default("");
+            $table->longText('description')->nullable();
             $table->string('city')->default("");
-            $table->string('picture')->default("");
+            $table->string('picture')->nullable();
             $table->string('orientation')->default("");
             $table->integer('admin')->default(0);
             $table->rememberToken();

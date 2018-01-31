@@ -5,13 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
     <div id="app">
@@ -53,6 +56,18 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a href="{{ route('user.inbox') }}">Inbox <span class="badge pull-right">5</span></a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+
+                                    @if(Auth::user()->admin == 1)
+                                        <li>
+                                            <a href="{{ route('admin.index') }}">Admin Panel</a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                    @endif
+
+                                    <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -76,5 +91,18 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( "#datepicker" ).datepicker({
+                dateFormat : 'dd/mm/yy',
+                changeMonth : true,
+                changeYear : true,
+                yearRange: '-100y:c+nn',
+                maxDate: '-1d'
+            });
+        });
+    </script>
 </body>
 </html>

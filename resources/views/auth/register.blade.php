@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
+
 @section('content')
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -26,21 +29,35 @@
                             </div>
                         </div>
                         <div class="form-group{{$errors->has('gender') ? 'has-error' : ''}}">
-                            <label for="name" class="col-md-4 control-label">Gender</label>
+                            <label class="col-md-4 control-label">Gender</label>
 
                             <div class="col-md-6">
-                                <div class="checkbox">
 
-                                    <label class="checkbox-inline"><input type="checkbox" value="male" name="gender">Male</label>
-                                    <label class="checkbox-inline"><input type="checkbox" value="female" name="gender">Female</label>
 
-                                    @if ($errors->has('gender'))
-                                        <span class="help-block">
+                                <input type="radio" name="gender" value="male"> Male</label>
+                                <input type="radio" name="gender" value="female"> Female</label>
+
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
                                         <strong>{{ $errors->first('gender') }}</strong>
                                     </span>
-                                    @endif
+                                @endif
 
-                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group" {{$errors->has('dob') ? 'has-error' : ''}}>
+
+                            <label class="col-md-4 control-label">Date Of Birth</label>
+
+                            <div class="col-md-6">
+                                <input type="text" id="datepicker" class="form-control" name="dob">
+
+                                @if ($errors->has('dob'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('dob') }}</strong>
+                                        </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -78,6 +95,22 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+                        <div class="form-group{{$errors->has('terms') ? 'has-error' : ''}}">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class="checkbox">
+
+                                    <label class="checkbox-inline"><input type="checkbox" value="male" name="terms">I accept the Terms and Conditions</label>
+
+
+                                    @if ($errors->has('terms'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('terms') }}</strong>
+                                    </span>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
@@ -92,4 +125,8 @@
         </div>
     </div>
 </div>
+
+
+
 @endsection
+

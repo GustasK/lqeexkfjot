@@ -1,12 +1,17 @@
 <template lang="html">
     <div class="chat-composer">
-        <input type="text" placeholder="Type your message..." v-model="messageText" @keyup.enter="sendMessage">
-        <button class="btn btn-primary" @click="sendMessage">Send</button>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Type your message..." v-model="messageText" @keyup.enter="sendMessage" required>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" @click="sendMessage">Send</button>
+            </span>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
+        props: ['userName'],
         data() {
             return {
                 messageText: ''
@@ -17,7 +22,7 @@
                 this.$emit('sent', {
                     message: this.messageText,
                     user: {
-                        name: "Gustasss"
+                        name: this.userName
                     }
                 });
 

@@ -1100,6 +1100,7 @@ Vue.component('example-component', __webpack_require__(41));
 Vue.component('chat-message', __webpack_require__(44));
 Vue.component('chat-log', __webpack_require__(47));
 Vue.component('chat-composer', __webpack_require__(50));
+Vue.component('chat-conversations', __webpack_require__(64));
 
 var app = new Vue({
     el: '#app',
@@ -1114,6 +1115,11 @@ var app = new Vue({
     },
     created: function created() {
         var _this = this;
+
+        axios.get('/conversations').then(function (response) {
+            _this.messages = response.data;
+            console.log(response);
+        });
 
         axios.get('/messages').then(function (response) {
             _this.messages = response.data;
@@ -48403,8 +48409,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['userName'],
     data: function data() {
         return {
             messageText: ''
@@ -48416,7 +48427,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('sent', {
                 message: this.messageText,
                 user: {
-                    name: "Gustasss"
+                    name: this.userName
                 }
             });
 
@@ -48434,41 +48445,50 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "chat-composer" }, [
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.messageText,
-          expression: "messageText"
-        }
-      ],
-      attrs: { type: "text", placeholder: "Type your message..." },
-      domProps: { value: _vm.messageText },
-      on: {
-        keyup: function($event) {
-          if (
-            !("button" in $event) &&
-            _vm._k($event.keyCode, "enter", 13, $event.key)
-          ) {
-            return null
+    _c("div", { staticClass: "input-group" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.messageText,
+            expression: "messageText"
           }
-          _vm.sendMessage($event)
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          placeholder: "Type your message...",
+          required: ""
         },
-        input: function($event) {
-          if ($event.target.composing) {
-            return
+        domProps: { value: _vm.messageText },
+        on: {
+          keyup: function($event) {
+            if (
+              !("button" in $event) &&
+              _vm._k($event.keyCode, "enter", 13, $event.key)
+            ) {
+              return null
+            }
+            _vm.sendMessage($event)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.messageText = $event.target.value
           }
-          _vm.messageText = $event.target.value
         }
-      }
-    }),
-    _vm._v(" "),
-    _c(
-      "button",
-      { staticClass: "btn btn-primary", on: { click: _vm.sendMessage } },
-      [_vm._v("Send")]
-    )
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "input-group-btn" }, [
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", on: { click: _vm.sendMessage } },
+          [_vm._v("Send")]
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -48486,6 +48506,100 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(65)
+/* template */
+var __vue_template__ = __webpack_require__(66)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ChatConversations.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-26a6fd71", Component.options)
+  } else {
+    hotAPI.reload("data-v-26a6fd71", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    //        props: ['message']
+});
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "list-group-item" })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-26a6fd71", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

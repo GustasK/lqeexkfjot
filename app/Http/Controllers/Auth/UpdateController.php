@@ -6,13 +6,13 @@
  * Time: 14:13
  */
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class UpdateController extends Controller
 {
@@ -24,7 +24,7 @@ class UpdateController extends Controller
         $this->validate($request, [
             'description' => 'required|min:150|max:600',
             'city' => 'required',
-            'file' => 'required|image|mimes:jpg,png|max:2048'
+            'file' => 'required|max:2000|mimes:png,jpg,jpeg'
 
         ],[
             'description.required' => 'Please write at least 150 char about yourself.',
@@ -38,14 +38,12 @@ class UpdateController extends Controller
         $user->city = $request->city;
         $user->orientation = $request->option;
 
-        Storage::disk('uploads')->put($request->file, 'Contents');
+        $request->file('file')->storeAs('/', $request->file->getClientOriginalName(), 'uploads');
 
-        $user->picture = $request->file;
+        $user->picture = $request->file->getClientOriginalName();
 
         $user->save();
 
-
     }
-
 
 }

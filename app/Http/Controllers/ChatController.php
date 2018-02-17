@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\User;
 use App\Message;
 use App\Conversation;
 use App\Events\MessagePosted;
@@ -34,11 +35,22 @@ class ChatController extends Controller
 
     public function getConversations()
     {
-        return Conversation::all();
+        $user = User::with('conversations')->find(Auth::user()->id);
+        return $user->conversations;
+    }
+
+    public function getConversationUsers($conversation_id)
+    {
+        return Conversation::find($conversation_id)->users;
     }
 
     public function getMessages()
     {
         return Message::with('user')->get();
+    }
+
+    public function getChatMessages($conversation_id)
+    {
+        return Conversation::find($conversation_id)->messages;
     }
 }

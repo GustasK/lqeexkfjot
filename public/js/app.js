@@ -377,33 +377,6 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -507,6 +480,33 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -1072,67 +1072,79 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
-module.exports = __webpack_require__(53);
+module.exports = __webpack_require__(59);
 
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 __webpack_require__(12);
 
 window.Vue = __webpack_require__(38);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 
 Vue.component('example-component', __webpack_require__(41));
 Vue.component('chat-message', __webpack_require__(44));
 Vue.component('chat-log', __webpack_require__(47));
 Vue.component('chat-composer', __webpack_require__(50));
-Vue.component('chat-conversations', __webpack_require__(64));
+Vue.component('chat-conversation', __webpack_require__(53));
+Vue.component('conversation-log', __webpack_require__(56));
 
 var app = new Vue({
     el: '#app',
-    data: {
-        messages: []
+    data: function data() {
+        return {
+            conversations: {
+                list: [],
+                current: {
+                    messages: []
+                }
+            }
+        };
     },
+
     methods: {
         addMessage: function addMessage(message) {
-            this.messages.push(message);
+            this.conversations.current.messages.push(message);
             axios.post('/messages', message).then(function (response) {});
         }
     },
     created: function created() {
         var _this = this;
 
-        axios.get('/conversations').then(function (response) {
-            _this.messages = response.data;
-            console.log(response);
+        Promise.all([axios.get('/conversations')]
+        // axios.get('/messages/1')
+        ).then(function (values) {
+            _this.conversations.list = values[0].data;
+
+            // this.conversations.list.forEach(function(conversation) {
+            //    conversation.messages = []
+            // });
+
+            _this.conversations.current = _this.conversations.list[0];
+            _this.conversations.current.messages = values[1].data;
         });
 
-        axios.get('/messages').then(function (response) {
-            _this.messages = response.data;
-        });
+        // axios.get('/conversations').then(response => {
+        //     this.conversations.current = response.data[0];
+        // }).then(
+        //     axios.get('/messages').then(response => {
+        //         this.conversations.current.messages = response.data;
+        //         console.log(this.conversations.current);
+        //     })
+        // );
+
 
         Echo.join('chatroom').listen('MessagePosted', function (e) {
-            _this.messages.push({
+            _this.conversation.current.messages.push({
                 message: e.message.message,
                 user: e.user
             });
 
             console.log(e);
         });
+
+        console.log('aa');
     }
 });
 
@@ -18290,7 +18302,7 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(14)(module)))
 
 /***/ }),
 /* 14 */
@@ -47765,7 +47777,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(39).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(39).setImmediate))
 
 /***/ }),
 /* 39 */
@@ -47832,7 +47844,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
 /* 40 */
@@ -48025,14 +48037,14 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(5)))
 
 /***/ }),
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(42)
 /* template */
@@ -48151,7 +48163,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(45)
 /* template */
@@ -48219,11 +48231,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("p", [_vm._v(_vm._s(_vm.message.message))]),
-    _vm._v(" "),
-    _c("small", [_vm._v(_vm._s(_vm.message.user.name))])
-  ])
+  return _c("div", [_c("p", [_vm._v(_vm._s(_vm.message.message))])])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48240,7 +48248,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(48)
 /* template */
@@ -48297,9 +48305,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['messages']
+    props: ['conversations']
 });
 
 /***/ }),
@@ -48312,31 +48322,13 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "chat-log" },
-    [
-      _vm._l(_vm.messages, function(message) {
-        return _c("chat-message", {
-          staticClass: "list-group-item",
-          attrs: { message: message }
-        })
-      }),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.messages.length === 0,
-              expression: "messages.length === 0"
-            }
-          ]
-        },
-        [_vm._v("\n        Nothing here yet!\n    ")]
-      )
-    ],
-    2
+    { staticClass: "chat-log pre-scrollable" },
+    _vm._l(_vm.conversations.current.messages, function(message) {
+      return _c("chat-message", {
+        staticClass: "list-group-item",
+        attrs: { message: message }
+      })
+    })
   )
 }
 var staticRenderFns = []
@@ -48354,7 +48346,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(51)
 /* template */
@@ -48503,30 +48495,14 @@ if (false) {
 
 /***/ }),
 /* 53 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(65)
+var __vue_script__ = __webpack_require__(54)
 /* template */
-var __vue_template__ = __webpack_require__(66)
+var __vue_template__ = __webpack_require__(55)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48543,7 +48519,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ChatConversations.vue"
+Component.options.__file = "resources\\assets\\js\\components\\ChatConversation.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -48552,9 +48528,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-26a6fd71", Component.options)
+    hotAPI.createRecord("data-v-0120e1f2", Component.options)
   } else {
-    hotAPI.reload("data-v-26a6fd71", Component.options)
+    hotAPI.reload("data-v-0120e1f2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -48565,7 +48541,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 65 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48578,18 +48554,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    //        props: ['message']
+    props: ['conversations', 'conversation'],
+    methods: {
+        getMessages: function getMessages(conversation_id) {
+            var _this = this;
+
+            this.conversations.current = this.conversation;
+            axios.get('/messages/' + conversation_id, conversation_id).then(function (response) {
+                _this.conversation.messages = response.data;
+            });
+        }
+    }
 });
 
 /***/ }),
-/* 66 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "list-group-item" })
+  return _c(
+    "a",
+    {
+      staticClass: "list-group-item",
+      on: {
+        click: function($event) {
+          _vm.getMessages(_vm.conversation.id)
+        }
+      }
+    },
+    [_c("p", [_vm._v(_vm._s(_vm.conversation.name))])]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48597,9 +48594,132 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-26a6fd71", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0120e1f2", module.exports)
   }
 }
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(57)
+/* template */
+var __vue_template__ = __webpack_require__(58)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ConversationLog.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2907891a", Component.options)
+  } else {
+    hotAPI.reload("data-v-2907891a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['conversations', 'conversation']
+});
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "chat-log pre-scrollable" },
+    [
+      _vm._l(_vm.conversations.list, function(conversation) {
+        return _c("chat-conversation", {
+          attrs: {
+            conversations: _vm.conversations,
+            conversation: conversation
+          }
+        })
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.conversations.list.length === 0,
+              expression: "conversations.list.length === 0"
+            }
+          ]
+        },
+        [_vm._v("\n        Nothing here yet!\n    ")]
+      )
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2907891a", module.exports)
+  }
+}
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

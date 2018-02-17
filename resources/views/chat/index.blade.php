@@ -6,18 +6,17 @@
             <div class="col-md-offset-2 col-md-3">
                 <div class="list-group">
                     <div class="list-group-item active">Conversations</div>
-                    <chat-conversations></chat-conversations>
+                    <conversation-log :conversations="conversations"></conversation-log>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="list-group">
                     <div class="list-group-item active">Messages</div>
-                    <chat-log :messages="messages"></chat-log>
+                    <chat-log :conversations="conversations"></chat-log>
                 </div>
                 <chat-composer user-name="{{ Auth::user()->name }}" v-on:sent="addMessage"></chat-composer>
             </div>
         </div>
-
     </div>
 @endsection
 

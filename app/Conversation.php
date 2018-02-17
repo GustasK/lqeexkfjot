@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     protected $fillable = [
-        'member_1', 'member_2'
+        'name'
     ];
 
-//    public function messages()
-//    {
-//        return $this->hasMany(Message::class);
-//    }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'conversation_participants', 'conversation_id', 'user_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

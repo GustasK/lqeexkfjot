@@ -2,32 +2,29 @@
 
 use App\Http\Middleware\CheckAdmin;
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-<<<<<<< HEAD
 Route::get('/inbox', 'HomeController@inbox')->name('user.inbox');
+Route::get('/profile', 'HomeController@profile')->name('user.profile');
 
 Route::group(['prefix' => 'message'], function() {
     Route::get('/', 'MessageController@index');
     Route::post('/compose', 'MessageController@create')->name('message.compose');
 });
 
-=======
-Route::post('/updateInfo', 'UpdateController@create')->name('updateInfo');
+/*  Chat routes */
+Route::group(['middleware' => 'auth'], function() {
 
+    Route::get('/chat', 'ChatController@index')->name('chat');
+    Route::get('/messages', 'ChatController@getMessages');
+    Route::post('/messages', 'ChatController@sendMessage');
+    Route::get('/conversations', 'ChatController@getConversations');
+    Route::get('/messages/{user_id}', 'ChatController@getChatMessages');
 
-Route::get('/updateInfo', function (){
-    return view('updateInfo');
 });
->>>>>>> uploading picture fixed
 
+/*  Admin routes */
 Route::group(['middleware' => CheckAdmin::class, 'prefix' => 'admin'], function() {
 
     Route::get('/', 'AdminController@index')->name('admin.index');

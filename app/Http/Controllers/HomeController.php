@@ -29,4 +29,9 @@ class HomeController extends Controller
     public function inbox() {
         return view('inbox');
     }
+
+    public function profile()
+    {
+        return view('inbox');
+    }
 }
